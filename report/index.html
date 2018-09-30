@@ -9,7 +9,7 @@ function generatePointSelectNode(point) {
   var select = document.createElement("select");
 
   //Create and append the options
-  for (var i = 0; i < point; i++) {
+  for (var i = 0; i <= point; i++) {
       var option = document.createElement("option");
       option.value = i;
       option.text = i;
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Element を作成
     var element = template.content.cloneNode(true);
     // 各パラメータを設定する
-    element.getElementById("point").appendChild(generatePointSelectNode(6));
-    element.getElementById("point2").appendChild(generatePointSelectNode(6));
+    element.getElementById("point").appendChild(generatePointSelectNode(7));
+    element.getElementById("point2").appendChild(generatePointSelectNode(7));
     element.getElementById("match").innerHTML = match;
     document.getElementById('result-table').appendChild(element);
   });
@@ -69,9 +69,52 @@ document.addEventListener('DOMContentLoaded', function() {
 </header>
 <div class="container">
   <form action="/action_page.php">
-    <table class="table table-bordered" style="width:400px;" id="result-table">
-      <tr style="width:200px;" class="text-center"><th>自チーム名</th><th colspan=3>対戦結果</th><th>対戦チーム名</th></tr>
-      <tr>
+    <table class="table table-bordered" style="width: auto;" id="result-table">
+      <tr class="text-center">
+        <th class="text-left">
+          <input type="radio" name="sex" value="man">男子<br>
+          <input type="radio" name="sex" value="woman">女子<br>
+          <input type="radio" name="sex" value="senior">シニア
+        </th>
+        <th colspan=2>
+          <div>予選</div>
+          <select>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+          </select>
+        </th>
+        <th>
+          <div>決勝</div>
+          <select>
+            <option value="1位">1位</option>
+            <option value="2位">2位</option>
+            <option value="3位">3位</option>
+            <option value="4位">4位</option>
+          </select>
+        </th>
+        <th>
+          <div>試合No</div>
+          <select>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">43</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+        </th>
+      </tr>
+      <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>対戦結果</th><th>対戦チーム名</th></tr>
+      <tr class="text-center">
         <td>
           <select id="team-selector"></select>
         </td>
@@ -89,14 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
         </td>
       </tr>
 
-      <tr class="text-center"><th colspan=5>対戦結果</th></tr>
+      <tr class="text-center table-info"><th colspan=5>対戦結果</th></tr>
       <template id="game-result-selector">
-        <tr><td id="point" colspan="2" align=right></td><td id="match"></td><td id="point2" colspan="2"></td></tr>
+        <tr class="text-center"><td></td><td id="point"></td><td id="match"></td><td id="point2"></td><td></td></tr>
       </template>
     </table>
 
-    <table class="table table-bordered">
-    <tr><th>対戦表の添付</th></tr>
+    <table class="table table-bordered" style="width: auto;">
+    <tr class="table-info"><th>対戦表の添付</th></tr>
     <tr><td>
     <input type="file" name="picture" accept="image/*">
     </td></tr>
