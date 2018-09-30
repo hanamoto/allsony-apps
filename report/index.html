@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<title>Allsony Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script>
+
+function generatePointSelectNode(point) {
+  var select = document.createElement("select");
+
+  //Create and append the options
+  for (var i = 0; i < point; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      select.appendChild(option);
+  }
+
+  return select;
+}
+document.addEventListener('DOMContentLoaded', function() {
+
+  var teams = [
+    { teamId : "honsya", teamName : "本社A" },
+    { teamId : "sie", teamName : "SIE" },
+    { teamId : "smoj", teamName : "SMOJ" }
+  ];
+
+  Array.prototype.forEach.call(document.querySelectorAll('#team-selector'), function(node) {
+    teams.forEach(function(team) {
+      var option = document.createElement("option");
+      option.value = team.teamId;
+      option.text = team.teamName;
+      node.appendChild(option);
+    });
+  });
+
+  // セットポイント結果の選択
+  Array.prototype.forEach.call(document.querySelectorAll('#set-result-selector'), function(node) {
+    var set_max = 7;
+    for (var i = 0; i <= set_max; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      node.appendChild(option);
+    };
+  });
+
+  // ゲームポイント結果の選択
+  var template = document.getElementById("game-result-selector");
+  //console.log(template);
+
+  var matches = [ "S1", "S2", "D1", "D2", "D3" ];
+  matches.forEach(function(match) {
+    // Element を作成
+    var element = template.content.cloneNode(true);
+    // 各パラメータを設定する
+    element.getElementById("point").appendChild(generatePointSelectNode(6));
+    element.getElementById("point2").appendChild(generatePointSelectNode(6));
+    element.getElementById("match").innerHTML = match;
+    document.getElementById('result-table').appendChild(element);
+  });
+});
+
+</script>
+<body>
+<header>
+  <h3>Allsony Report</h3>
+</header>
+<div class="container">
+  <form action="/action_page.php">
+    <table class="table table-bordered" style="width:400px;" id="result-table">
+      <tr style="width:200px;" class="text-center"><th>自チーム名</th><th colspan=3>対戦結果</th><th>対戦チーム名</th></tr>
+      <tr>
+        <td>
+          <select id="team-selector"></select>
+        </td>
+        <td>
+            <select id="set-result-selector"></select>
+        </td>
+        <td>
+            vs
+        </td>
+        <td>
+            <select id="set-result-selector"></select>
+        </td>
+        <td>
+          <select id="team-selector" id="team-select"></select>
+        </td>
+      </tr>
+
+      <tr class="text-center"><th colspan=5>対戦結果</th></tr>
+      <template id="game-result-selector">
+        <tr><td id="point" colspan="2" align=right></td><td id="match"></td><td id="point2" colspan="2"></td></tr>
+      </template>
+    </table>
+
+    <table class="table table-bordered">
+    <tr><th>対戦表の添付</th></tr>
+    <tr><td>
+    <input type="file" name="picture" accept="image/*">
+    </td></tr>
+    </table>
+
+    <p><button>結果送信</button></p>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>
