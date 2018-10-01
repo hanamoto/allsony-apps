@@ -72,31 +72,33 @@ document.addEventListener('DOMContentLoaded', function() {
     <table class="table table-bordered table-sm" style="width: auto;" id="result-table">
       <tr class="text-center">
         <th class="text-left">
-          <input type="radio" name="sex" value="man">男子<br>
-          <input type="radio" name="sex" value="woman">女子<br>
-          <input type="radio" name="sex" value="senior">シニア
+          <input type="radio" name="sex" value="man" id="radio_man"><label for="radio_man">男子</label><br>
+          <input type="radio" name="sex" value="woman" id="radio_woman"><label for="radio_woman">女子</label><br>
+          <input type="radio" name="sex" value="senior" id="radio_senior"><label for="radio_senior">シニア</label>
         </th>
         <th colspan=2>
           <div>予選</div>
           <select>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="G">G</option>
-            <option value="H">H</option>
-            <option value="I">I</option>
+            <option value="A">Aリーグ</option>
+            <option value="B">Bリーグ</option>
+            <option value="C">Cリーグ</option>
+            <option value="D">Dリーグ</option>
+            <option value="E">Eリーグ</option>
+            <option value="F">Fリーグ</option>
+            <option value="G">Gリーグ</option>
+            <option value="H">Hリーグ</option>
+            <option value="I">Iリーグ</option>
           </select>
         </th>
         <th>
           <div>決勝</div>
           <select>
-            <option value="1位">1位</option>
-            <option value="2位">2位</option>
-            <option value="3位">3位</option>
-            <option value="4位">4位</option>
+            <option value="1位">1位トー</option>
+            <option value="2位">2位トー</option>
+            <option value="3位">3位トー</option>
+            <option value="4位">4位トー</option>
+            <option value="5位">5位トー</option>
+            <option value="6位">6位トー</option>
           </select>
         </th>
         <th>
@@ -105,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">43</option>
+            <option value="4">4</option>
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
@@ -113,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </select>
         </th>
       </tr>
-      <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>対戦結果<br>取得セット数</th><th>対戦チーム名</th></tr>
+      <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>取得セット数</th><th>対戦チーム名</th></tr>
       <tr class="text-center">
         <td>
           <select id="team-selector"></select>
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </td>
       </tr>
 
-      <tr class="text-center table-info"><th colspan=5>対戦結果<br>取得ゲーム数</th></tr>
+      <tr class="text-center table-info"><th colspan=5>取得ゲーム数</th></tr>
       <template id="game-result-selector">
         <tr class="text-center"><td></td><td id="point"></td><td id="match"></td><td id="point2"></td><td></td></tr>
       </template>
