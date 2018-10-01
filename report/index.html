@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -63,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+</head>
 <body>
 <header>
   <h3>Allsony Report</h3>
@@ -76,9 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
           <input type="radio" name="sex" value="woman" id="radio_woman"><label for="radio_woman">女子</label><br>
           <input type="radio" name="sex" value="senior" id="radio_senior"><label for="radio_senior">シニア</label>
         </th>
-        <th colspan=2>
-          <div>予選</div>
+        <th colspan=4 class="text-left">
+          <div>
           <select>
+            <option value="A">-- 予選リーグの選択 --</option>
             <option value="A">Aリーグ</option>
             <option value="B">Bリーグ</option>
             <option value="C">Cリーグ</option>
@@ -87,23 +91,22 @@ document.addEventListener('DOMContentLoaded', function() {
             <option value="F">Fリーグ</option>
             <option value="G">Gリーグ</option>
             <option value="H">Hリーグ</option>
-            <option value="I">Iリーグ</option>
           </select>
-        </th>
-        <th>
-          <div>決勝</div>
+          </div>
+          <div>
           <select>
-            <option value="1位">1位トー</option>
-            <option value="2位">2位トー</option>
-            <option value="3位">3位トー</option>
-            <option value="4位">4位トー</option>
-            <option value="5位">5位トー</option>
-            <option value="6位">6位トー</option>
+            <option value="N">-- 決勝の選択 --</option>
+            <option value="1位">1位トーナメント</option>
+            <option value="2位">2位トーナメント</option>
+            <option value="3位">3位トーナメント</option>
+            <option value="4位">4位トーナメント</option>
+            <option value="5位">5位トーナメント</option>
+            <option value="6位">6位トーナメント</option>
           </select>
-        </th>
-        <th>
-          <div>試合No</div>
+          </div>
+          <div>
           <select>
+            <option value="0">-- 試合Noの選択 --</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -113,9 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <option value="7">7</option>
             <option value="8">8</option>
           </select>
+          </div>
         </th>
       </tr>
-      <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>取得セット数</th><th>対戦チーム名</th></tr>
+      <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
       <tr class="text-center">
         <td>
           <select id="team-selector"></select>
@@ -141,9 +145,17 @@ document.addEventListener('DOMContentLoaded', function() {
     </table>
 
     <table class="table table-bordered table-sm" style="width: auto;">
-    <tr class="table-info"><th>対戦表の添付</th></tr>
+    <tr class="table-info"><th>オーダー用紙の画像添付</th></tr>
     <tr><td>
-    <input type="file" name="picture" accept="image/*">
+      <input type="file" name="picture" accept="image/*">
+    </td></tr>
+    <tr class="table-info"><th>送信者のお名前</th></tr>
+    <tr><td>
+      <input type="text" name="sender_name">
+    </td></tr>
+    <tr class="table-info"><th>スタッフへのコメント</th></tr>
+    <tr><td>
+      <textarea name="comment" rows="4" cols="40">ここに感想を記入してください。</textarea>
     </td></tr>
     </table>
 
