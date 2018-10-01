@@ -23,19 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
       node.appendChild(option);
     });
   });
-
-  // セットポイント結果の選択
-  Array.prototype.forEach.call(document.querySelectorAll('#set-result-selector'), function(node) {
-    var set_max = 7;
-    for (var i = 0; i <= set_max; i++) {
-      var option = document.createElement("option");
-      option.value = i;
-      option.text = i;
-      node.appendChild(option);
-    };
-  });
 });
 
+// 男子・女子・シニアそれぞれの試合パターンを返す
 function getMatchPattern() {
   var matchPatterns = {
     man : [ "S1", "S2", "D1", "D2", "D3" ],
