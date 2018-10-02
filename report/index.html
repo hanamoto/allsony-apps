@@ -53,7 +53,7 @@ function updateGame() {
 
   // 男子・女子・シニアの選択に応じて、入力すべきフィールドだけにする
   [ "S1", "S2", "D1", "D2", "D3" ].forEach(function(match) {
-    if (matchPattern.includes(match)) {
+    if (matchPattern.indexOf(match) != -1) {
       $("#game_" + match).show();
     } else {
       $("#game_" + match).hide();
