@@ -47,80 +47,17 @@ function getMatchPattern() {
   return matchPatterns.man;
 }
 
-// メールに埋め込む部分の HTML を生成する
-function generateMailContents() {
-  // HTML メールの中で外部 css を読み込めないので、素の HTML で書く
-  var mailContents = (function () {/*
-<table border="1">
-  <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
-  <tr class="text-center">
-    <th class="text-left">${sex}</th>
-    <th colspan=4 class="text-left">
-      <div>${matchName.value}</div>
-      <div>${matchNumber}</div>
-    </th>
-  </tr>
-  <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
-  <tr class="text-center">
-    <td>${team_L}</td>
-    <td>${match_L.value}</td>
-    <td>vs</td>
-    <td>${match_R.value}</td>
-    <td>${team_R}</td>
-  </tr>
-
-  <tr class="text-center table-info"><th colspan=5>取得ゲーム数</th></tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_S1.value}</td>
-    <td class="text-center">S1</td>
-    <td colspan=2 class="text-left">${game_R_S1.value}</td></td>
-  </tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_S2.value}</td>
-    <td class="text-center">S2</td>
-    <td colspan=2 class="text-left">${game_R_S2.value}</td></td>
-  </tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_D1.value}</td>
-    <td class="text-center">D1</td>
-    <td colspan=2 class="text-left">${game_R_D1.value}</td></td>
-  </tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_D2.value}</td>
-    <td class="text-center">D2</td>
-    <td colspan=2 class="text-left">${game_R_D2.value}</td></td>
-  </tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_D3.value}</td>
-    <td class="text-center">D3</td>
-    <td colspan=2 class="text-left">${game_R_D3.value}</td></td>
-  </tr>
-  <tr>
-    <td colspan=2 class="text-right">${game_L_total.innerHTML}</td>
-    <td class="text-center">合計</td>
-    <td colspan=2 class="text-left">${game_R_total.innerHTML}</td>
-  </tr>
-</table>
-
-<table class="table table-bordered table-sm" style="width: auto;">
-<tr class="table-info"><th>送信者のお名前</th></tr>
-<tr><td>${sender_name}</td></tr>
-<tr class="table-info"><th>スタッフへの連絡事項 (もしあれば)</th></tr>
-<tr><td>${comment}</td></tr>
-</table>
-*/}).toString().match(/(?:\/\*(?:[\s\S]*?)\*\/)/).pop().replace(/^\/\*/, "").replace(/\*\/$/, "");
-
-  // 上記のヒアドキュメント内のキーワードを置換する
-  var object = {
-      url: "http://shimz.me/blog",
-      title: "GUNMA GIS GEEK"
-  }
-  var html = jQuery.tmpl(mailContents, object);
-  $("#mailContentsView").html(html);
-}
-
 // 項目を変更したときの処理
 function updateGame() {
+  if (document.getElementById("radio_man").checked) {
+    $("#sex_label").val("男子");
+  }
+  if (document.getElementById("radio_woman").checked) {
+    $("#sex_label").val("女子");
+  }
+  if (document.getElementById("radio_senior").checked) {
+    $("#sex_label").val("シニア");
+  }
   var matchPattern = getMatchPattern();
 
   // 男子・女子・シニアの選択に応じて、入力すべきフィールドだけにする
@@ -147,7 +84,87 @@ function updateGame() {
 //  console.log($("#send-report-contents").val());
 }
 
+
+// メールに埋め込む部分の HTML を生成する
+function generateMailContents() {
+  $.views.converters("jqvalue", function(id) {
+    console.log(String(id));
+    console.log($("#" + id).val());
+    return $("#" + id).val()
+  });
+
+  // 上記のヒアドキュメント内のキーワードを置換する
+  var object = {
+      url: "http://shimz.me/blog",
+      title: "GUNMA GIS GEEK"
+  }
+  var html = $('#mailContentsTemplate').render(object);
+  //var html = jQuery.tmpl(mailContents, object);
+  $("#mailContentsView").html(html);
+}
 </script>
+
+<!-- メールのテンプレート -->
+<script id="mailContentsTemplate" type="text/x-jsrender">
+  <table border="1">
+    <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
+    <tr class="text-center">
+      <th class="text-left">${sex_label.value}</th>
+      <th colspan=4 class="text-left">
+        <div>${matchName:selected.text}</div>
+        <div>${matchNumber}</div>
+      </th>
+    </tr>
+    <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
+    <tr class="text-center">
+      <td>${team_L}</td>
+      <td>{{:match_L}}</td>
+      <td>vs</td>
+      <td>${match_R.value}</td>
+      <td>${team_R}</td>
+    </tr>
+  
+    <tr class="text-center table-info"><th colspan=5>取得ゲーム数</th></tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_S1.value}</td>
+      <td class="text-center">S1</td>
+      <td colspan=2 class="text-left">${game_R_S1.value}</td></td>
+    </tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_S2.value}</td>
+      <td class="text-center">S2</td>
+      <td colspan=2 class="text-left">${game_R_S2.value}</td></td>
+    </tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_D1.value}</td>
+      <td class="text-center">D1</td>
+      <td colspan=2 class="text-left">${game_R_D1.value}</td></td>
+    </tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_D2.value}</td>
+      <td class="text-center">D2</td>
+      <td colspan=2 class="text-left">${game_R_D2.value}</td></td>
+    </tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_D3.value}</td>
+      <td class="text-center">D3</td>
+      <td colspan=2 class="text-left">${game_R_D3.value}</td></td>
+    </tr>
+    <tr>
+      <td colspan=2 class="text-right">${game_L_total.innerHTML}</td>
+      <td class="text-center">合計</td>
+      <td colspan=2 class="text-left">${game_R_total.innerHTML}</td>
+    </tr>
+  </table>
+  
+  <table class="table table-bordered table-sm" style="width: auto;">
+  <tr class="table-info"><th>送信者のお名前</th></tr>
+  <tr><td>${sender_name.value}</td></tr>
+  <tr class="table-info"><th>スタッフへの連絡事項 (もしあれば)</th></tr>
+  <tr><td>${comment.value}</td></tr>
+  </table>
+</script>
+
 </head>
 <body>
 <header>
@@ -215,7 +232,7 @@ function updateGame() {
           <select id="team-selector"></select>
         </td>
         <td>
-            <select id="match_L" onChange="updateGame()">
+            <select id="match_L" data-link="match_L" onChange="updateGame()">
                 <option value="0">0<option value="1">1<option value="2">2<option value="3">3
                 <option value="4">4<option value="5">5
             </select>
@@ -324,14 +341,15 @@ function updateGame() {
     </td></tr>
     <tr class="table-info"><th>送信者のお名前</th></tr>
     <tr><td>
-      <input type="text" name="sender_name">
+      <input type="text" name="sender_name" id="sender_name">
     </td></tr>
     <tr class="table-info"><th>スタッフへの連絡事項 (もしあれば)</th></tr>
     <tr><td>
-      <textarea name="comment" rows="4" cols="30"></textarea>
+      <textarea name="comment" id="comment" rows="4" cols="30"></textarea>
     </td></tr>
     </table>
     <input type="hidden" name="send-report-contents" id="send-report-contents" value="">
+    <input type="hidden" id="sex_label" value="">
 
     <p><button>結果送信</button></p>
   </form>
@@ -341,7 +359,7 @@ function updateGame() {
 <div id="mailContentsView"></div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
