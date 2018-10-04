@@ -1,7 +1,7 @@
 <?php
 
-define("MAIL_TO",       "hana@hana-web.jp");
-define("MAIL_FROM",     "hana@hana-web.jp");
+define("MAIL_TO",       "allsony.report@gmail.com");
+define("MAIL_FROM",     "allsony.report@gmail.com");
 define("MAIL_SUBJECT",  "[AllsonyReport]");
 
 mb_language("Japanese");
@@ -15,7 +15,20 @@ function sendReport($message) {
     $headers .= "\r\n";
     $headers .= "Content-type: text/html; charset=UTF-8";
 
-    mail($to, $subject, $message, $headers);
+    $htmlMessage = <<< EOM
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Allsony Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+$message
+</body>
+</html>
+EOM;
+    $htmlMessage = wordwrap($htmlMessage, 70);
+    mail($to, $subject, $htmlMessage, $headers);
 }
 
 // 送信した内容をブラウザ画面に表示する
@@ -38,8 +51,12 @@ EOM;
 
 function main() {
     $message = $_POST["mailContents"];
-    sendReport($message);
+
+    // 送信した内容をブラウザ画面に表示
     displayMessage($message);
+
+    // メール送信
+    sendReport($message);
 }
 
 main();
