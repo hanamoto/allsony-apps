@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     { teamId : "smoj", teamName : "SMOJ" }
   ];
 
-  Array.prototype.forEach.call(document.querySelectorAll('#team-selector'), function(node) {
+  Array.prototype.forEach.call(document.querySelectorAll('.team-selector'), function(node) {
     teams.forEach(function(team) {
       var option = document.createElement("option");
       option.value = team.teamId;
@@ -94,12 +94,31 @@ function generateMailContents() {
   });
 
   // 上記のヒアドキュメント内のキーワードを置換する
-  var object = {
-      url: "http://shimz.me/blog",
-      title: "GUNMA GIS GEEK"
+  var data = {
+    sex_label: $("#sex_label").val(),
+    matchNumber: $("#matchNumber option:selected").text(),
+    matchName: $("#matchName option:selected").text(),
+    team_L: $("#team_L option:selected").text(),
+    team_R: $("#team_R option:selected").text(),
+    match_L: $("#match_L option:selected").text(),
+    match_R: $("#match_R option:selected").text(),
+    game_L_S1: $("#game_L_S1 option:selected").text(),
+    game_R_S1: $("#game_R_S1 option:selected").text(),
+    game_L_S2: $("#game_L_S2 option:selected").text(),
+    game_R_S2: $("#game_R_S2 option:selected").text(),
+    game_L_D1: $("#game_L_D1 option:selected").text(),
+    game_R_D1: $("#game_R_D1 option:selected").text(),
+    game_L_D2: $("#game_L_D2 option:selected").text(),
+    game_R_D2: $("#game_R_D2 option:selected").text(),
+    game_L_D3: $("#game_L_D3 option:selected").text(),
+    game_R_D3: $("#game_R_D3 option:selected").text(),
+    game_L_total: $("#game_L_total").text(),
+    game_R_total: $("#game_R_total").text(),
+    sender_name: $("#sender_name").val(),
+    comment: $("#comment").val(),
+    dummy: ""
   }
-  var html = $('#mailContentsTemplate').render(object);
-  //var html = jQuery.tmpl(mailContents, object);
+  var html = $('#mailContentsTemplate').render(data);
   $("#mailContentsView").html(html);
 }
 </script>
@@ -109,59 +128,65 @@ function generateMailContents() {
   <table border="1">
     <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
     <tr class="text-center">
-      <th class="text-left">${sex_label.value}</th>
+      <th class="text-left">{{:sex_label}}</th>
       <th colspan=4 class="text-left">
-        <div>${matchName:selected.text}</div>
-        <div>${matchNumber}</div>
+        <div>{{:matchName}}</div>
+        <div>{{:matchNumber}}</div>
       </th>
     </tr>
     <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
     <tr class="text-center">
-      <td>${team_L}</td>
+      <td>{{:team_L}}</td>
       <td>{{:match_L}}</td>
       <td>vs</td>
-      <td>${match_R.value}</td>
-      <td>${team_R}</td>
+      <td>{{:match_R}}</td>
+      <td>{{:team_R}}</td>
     </tr>
   
     <tr class="text-center table-info"><th colspan=5>取得ゲーム数</th></tr>
+    {{if sex_label == "男子" || sex_label == "女子"}}
     <tr>
-      <td colspan=2 class="text-right">${game_L_S1.value}</td>
+      <td colspan=2 class="text-right">{{:game_L_S1}}</td>
       <td class="text-center">S1</td>
-      <td colspan=2 class="text-left">${game_R_S1.value}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_S1}}</td></td>
     </tr>
+    {{/if}}
+    {{if sex_label == "男子"}}
     <tr>
-      <td colspan=2 class="text-right">${game_L_S2.value}</td>
+      <td colspan=2 class="text-right">{{:game_L_S2}}</td>
       <td class="text-center">S2</td>
-      <td colspan=2 class="text-left">${game_R_S2.value}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_S2}}</td></td>
     </tr>
+    {{/if}}
     <tr>
-      <td colspan=2 class="text-right">${game_L_D1.value}</td>
+      <td colspan=2 class="text-right">{{:game_L_D1}}</td>
       <td class="text-center">D1</td>
-      <td colspan=2 class="text-left">${game_R_D1.value}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D1}}</td></td>
     </tr>
     <tr>
-      <td colspan=2 class="text-right">${game_L_D2.value}</td>
+      <td colspan=2 class="text-right">{{:game_L_D2}}</td>
       <td class="text-center">D2</td>
-      <td colspan=2 class="text-left">${game_R_D2.value}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D2}}</td></td>
     </tr>
+    {{if sex_label == "男子" || sex_label == "シニア"}}
     <tr>
-      <td colspan=2 class="text-right">${game_L_D3.value}</td>
+      <td colspan=2 class="text-right">{{:game_L_D3}}</td>
       <td class="text-center">D3</td>
-      <td colspan=2 class="text-left">${game_R_D3.value}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D3}}</td></td>
     </tr>
+    {{/if}}
     <tr>
-      <td colspan=2 class="text-right">${game_L_total.innerHTML}</td>
+      <td colspan=2 class="text-right">{{:game_L_total}}</td>
       <td class="text-center">合計</td>
-      <td colspan=2 class="text-left">${game_R_total.innerHTML}</td>
+      <td colspan=2 class="text-left">{{:game_R_total}}</td>
     </tr>
   </table>
   
   <table class="table table-bordered table-sm" style="width: auto;">
   <tr class="table-info"><th>送信者のお名前</th></tr>
-  <tr><td>${sender_name.value}</td></tr>
+  <tr><td>{{:sender_name}}</td></tr>
   <tr class="table-info"><th>スタッフへの連絡事項 (もしあれば)</th></tr>
-  <tr><td>${comment.value}</td></tr>
+  <tr><td><pre>{{:comment}}</pre></td></tr>
   </table>
 </script>
 
@@ -229,10 +254,10 @@ function generateMailContents() {
       <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
       <tr class="text-center">
         <td>
-          <select id="team-selector"></select>
+          <select id="team_L" class="team-selector"></select>
         </td>
         <td>
-            <select id="match_L" data-link="match_L" onChange="updateGame()">
+            <select id="match_L" onChange="updateGame()">
                 <option value="0">0<option value="1">1<option value="2">2<option value="3">3
                 <option value="4">4<option value="5">5
             </select>
@@ -247,7 +272,7 @@ function generateMailContents() {
             </select>
         </td>
         <td>
-          <select id="team-selector" id="team-select"></select>
+          <select id="team_R" class="team-selector"></select>
         </td>
       </tr>
 
