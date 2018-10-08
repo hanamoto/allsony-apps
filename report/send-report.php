@@ -1,5 +1,8 @@
 <?php
 
+// https://github.com/PHPMailer/PHPMailer/tree/5.2-stable
+require './PHPMailer-5.2/PHPMailerAutoload.php';
+
 define("MAIL_TO",       "allsony.report@gmail.com");
 define("MAIL_FROM",     "allsony.report@gmail.com");
 define("MAIL_SUBJECT",  "[AllsonyReport]");
@@ -9,11 +12,11 @@ mb_internal_encoding("UTF-8");
 
 // HTML メールを送信する
 function sendReport($message) {
-    $to      = MAIL_TO;
-    $subject = MAIL_SUBJECT;
-    $headers = "From: " . MAIL_FROM;
-    $headers .= "\r\n";
-    $headers .= "Content-type: text/html; charset=UTF-8";
+    $mail = new PHPMailer;
+    $mail->addAddress(MAIL_TO); // Add a recipient
+    $mail->setFrom(MAIL_FROM);
+    $mail->Subject = MAIL_SUBJECT;
+    $mail->isHTML(true);
 
     $htmlMessage = <<< EOM
 <html>
@@ -27,8 +30,8 @@ $message
 </body>
 </html>
 EOM;
-    $htmlMessage = wordwrap($htmlMessage, 70);
-    mail($to, $subject, $htmlMessage, $headers);
+    $mail->Body = $htmlMessage;
+    $mail->send();
 }
 
 // 送信した内容をブラウザ画面に表示する
