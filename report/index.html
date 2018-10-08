@@ -4,9 +4,50 @@
 <meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script>
+<style type="text/css">
 
+.table-mail th,
+.table-mail td {
+  padding: 0.3rem;
+}
+
+.table-bordered {
+  border: 1px solid;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 2px;
+}
+
+.table-info,
+.table-info > th,
+.table-info > td {
+  background-color: #bee5eb;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+</style>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 
   var teams = [
@@ -81,7 +122,6 @@ function updateGame() {
   generateMailContents();
 }
 
-
 // メールに埋め込む部分の HTML を生成する
 function generateMailContents() {
   $.views.converters("jqvalue", function(id) {
@@ -122,15 +162,14 @@ function generateMailContents() {
   $("#mailContentsView").html(html);
 }
 </script>
-
 </head>
 <body>
 <header>
   <h3>Allsony Report</h3>
 </header>
-<div class="container-fluid">
+<div>
   <form action="send-report.php" method="post">
-    <table class="table table-bordered table-sm" style="width: auto;" id="result-table">
+    <table class="table table-bordered" id="result-table">
       <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
       <tr class="text-center">
         <th class="text-left">
@@ -318,7 +357,7 @@ function generateMailContents() {
 
 <!-- メールのテンプレート -->
 <script id="mailContentsTemplate" type="text/x-jsrender">
-  <table border="1">
+  <table class="table-bordered table-mail">
     <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
     <tr class="text-center">
       <th colspan=5>
@@ -384,7 +423,5 @@ function generateMailContents() {
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.91/jsrender.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
 </body>
 </html>
