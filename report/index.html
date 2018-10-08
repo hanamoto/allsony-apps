@@ -8,8 +8,9 @@
 <script src="jquery-3.3.1.slim.min.js"></script>
 <script src="jsrender-0.9.91.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+var sex_label;
 
+document.addEventListener('DOMContentLoaded', function() {
   var teams = [
     { teamId : "honsya", teamName : "本社A" },
     { teamId : "sie", teamName : "SIE" },
@@ -50,19 +51,30 @@ function getMatchPattern() {
 
 // 項目を変更したときの処理
 function updateGame() {
+  var sex_name;
+  sex_label = "";
   if (document.getElementById("radio_man").checked) {
-    $("#sex_name").val("man");
-    $("#sex_label").val("男子");
+    sex_name = "man";
+    sex_label = "男子";
   }
   if (document.getElementById("radio_woman").checked) {
-    $("#sex_name").val("woman");
-    $("#sex_label").val("女子");
+    sex_name = "woman";
+    sex_label = "女子";
   }
   if (document.getElementById("radio_senior").checked) {
-    $("#sex_name").val("senior");
-    $("#sex_label").val("シニア");
+    sex_name = "senior";
+    sex_label = "シニア";
   }
   var matchPattern = getMatchPattern();
+
+  // match_name の設定
+  var match_name = "";
+  var match_league = $("#match_league option:selected");
+  var match_number = $("#match_number option:selected");
+  if (sex_name && match_league.val() != "" && match_number.val() != "") {
+    match_name = sex_name + "_" + match_league.val() + "_No" + ("00" + match_number.val()).substr(-2);
+  }
+  $("#match_name").val(match_name);
 
   // 男子・女子・シニアの選択に応じて、入力すべきフィールドだけにする
   [ "S1", "S2", "D1", "D2", "D3" ].forEach(function(match) {
@@ -95,10 +107,10 @@ function generateMailContents() {
 
   // 上記のヒアドキュメント内のキーワードを置換する
   var data = {
-    sex_label: $("#sex_label").val(),
+    sex_label: sex_label,
     match_league: $("#match_league option:selected").text(),
     match_number: $("#match_number option:selected").text(),
-    match_name: $("#sex_name").val() + $("#match_league option:selected").val() + $("#match_number option:selected").val(),
+    match_name: $("#match_name").val(),
     team_L: $("#team_L option:selected").text(),
     team_R: $("#team_R option:selected").text(),
     match_L: $("#match_L option:selected").text(),
@@ -316,8 +328,7 @@ function generateMailContents() {
     </td></tr>
     </table>
     <input type="hidden" name="mailContents" id="mailContents" value="">
-    <input type="hidden" id="sex_name" value="">
-    <input type="hidden" id="sex_label" value="">
+    <input type="hidden" name="match_name" id="match_name" value="">
 
     <p><button>結果送信</button></p>
   </form>

@@ -65,6 +65,15 @@ EOM;
 function main() {
     $message = $_POST["mailContents"];
 
+    // 画像が添付されていればファイルに保存する
+    if ($_POST["match_name"] != "") {
+        if (is_uploaded_file($_FILES['picture']['tmp_name'])) {
+            if (move_uploaded_file($_FILES['picture']['tmp_name'], $uploadfile)) {
+                //$_FILES['picture']['tmp_name']
+            }
+        }
+    }
+
     // 送信した内容をブラウザ画面に表示
     displayMessage($message);
 
