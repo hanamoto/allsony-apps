@@ -1,0 +1,5 @@
+# .gitignore
+match_img/*
+!match_img/.gitkeep
+
+settings.php

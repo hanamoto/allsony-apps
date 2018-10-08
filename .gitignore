@@ -1,4 +1,4 @@
 .DS_Store
 
-report/*
-!report/.gitkeep
+report/match_img/*
+!report/match_img/.gitkeep
