@@ -1,0 +1,14 @@
+version: '3'
+services:
+  php:
+    image: tommylau/php-5.2
+    volumes:
+    - .:/var/www/html
+  web:
+    image: tommylau/nginx
+    ports:
+     - "8080:80"
+    volumes:
+    - .:/var/www/html
+    links:
+    - php
