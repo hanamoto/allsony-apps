@@ -150,7 +150,7 @@ function generateMailContents() {
   <h3>Allsony Report</h3>
 </header>
 <div>
-  <form action="send-report.php" method="post">
+  <form action="send-report.php" method="post" enctype="multipart/form-data">
     <table class="table table-bordered" id="result-table">
       <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
       <tr class="text-center">
@@ -316,7 +316,7 @@ function generateMailContents() {
     <table class="table table-bordered table-sm" style="width: auto;">
     <tr class="table-info"><th>オーダー用紙の画像添付</th></tr>
     <tr><td>
-      <input type="file" name="picture" accept="image/*">
+      <input type="file" name="match_img" accept="image/*">
     </td></tr>
     <tr class="table-info"><th>送信者のお名前</th></tr>
     <tr><td>
@@ -343,7 +343,7 @@ function generateMailContents() {
     <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
     <tr class="text-center">
       <th colspan=5>
-        {{:sex_label}}　{{:match_league}}　{{:match_number}}<br>
+        {{:sex_label}} / {{:match_league}} / 試合No {{:match_number}}<br>
         {{:match_name}}
       </th>
     </tr>
