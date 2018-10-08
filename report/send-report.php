@@ -4,7 +4,8 @@
 require './PHPMailer-5.2/PHPMailerAutoload.php';
 
 define("MAIL_TO",       "allsony.report@gmail.com");
-define("MAIL_FROM",     "allsony.report@gmail.com");
+//define("MAIL_FROM",     "allsony.report@gmail.com");
+define("MAIL_FROM",     "allsony@infostc.org");
 define("MAIL_SUBJECT",  "[AllsonyReport]");
 
 mb_language("Japanese");
@@ -18,12 +19,18 @@ function sendReport($message) {
     $mail->Subject = MAIL_SUBJECT;
     $mail->isHTML(true);
 
+    // css は html に直接埋め込む必要がある
+    $css = file_get_contents('report.css');
+
     $htmlMessage = <<< EOM
 <html>
 <head>
 <meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+$css
+</style>
 </head>
 <body>
 $message
@@ -43,10 +50,13 @@ function displayMessage($message) {
 <meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="report.css">
 </head>
 <body>
+<h2 color="red">結果を送信しました</h2>
+<div>
 $message
+</div>
 </body>
 </html>
 EOM;
