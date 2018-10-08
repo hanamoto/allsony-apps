@@ -68,13 +68,17 @@ function updateGame() {
   var matchPattern = getMatchPattern();
 
   // match_name の設定
-  var match_name = "";
+  var match_name = "", mail_subject = "";
   var match_league = $("#match_league option:selected");
   var match_number = $("#match_number option:selected");
+  var team_L = $("#team_L option:selected");
+  var team_R = $("#team_R option:selected");
   if (sex_name && match_league.val() != "" && match_number.val() != "") {
     match_name = sex_name + "_" + match_league.val() + "_No" + ("00" + match_number.val()).substr(-2);
+    mail_subject = sex_label + "/" + match_league.text() + "/ 試合No" + match_number.val() + " (" + team_L.text() + " vs " + team_R.text() + ")";
   }
   $("#match_name").val(match_name);
+  $("#mail_subject").val(mail_subject);
 
   // 男子・女子・シニアの選択に応じて、入力すべきフィールドだけにする
   [ "S1", "S2", "D1", "D2", "D3" ].forEach(function(match) {
@@ -111,6 +115,7 @@ function generateMailContents() {
     match_league: $("#match_league option:selected").text(),
     match_number: $("#match_number option:selected").text(),
     match_name: $("#match_name").val(),
+    mail_subject: $("#mail_subject").val(),
     team_L: $("#team_L option:selected").text(),
     team_R: $("#team_R option:selected").text(),
     match_L: $("#match_L option:selected").text(),
@@ -329,6 +334,7 @@ function generateMailContents() {
     </table>
     <input type="hidden" name="mailContents" id="mailContents" value="">
     <input type="hidden" name="match_name" id="match_name" value="">
+    <input type="hidden" name="mail_subject" id="mail_subject" value="">
 
     <p><button>結果送信</button></p>
   </form>
@@ -344,7 +350,6 @@ function generateMailContents() {
     <tr class="text-center">
       <th colspan=5>
         {{:sex_label}} / {{:match_league}} / 試合No {{:match_number}}<br>
-        {{:match_name}}
       </th>
     </tr>
     <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
@@ -397,10 +402,13 @@ function generateMailContents() {
   
   <table class="table table-bordered table-sm" style="width: auto;">
   <tr class="table-info"><th>送信者のお名前</th></tr>
-  <tr><td>{{:sender_name}}</td></tr>
+  <tr><td>{{>sender_name}}</td></tr>
   <tr class="table-info"><th>スタッフへの連絡事項 (もしあれば)</th></tr>
-  <tr><td><pre>{{:comment}}</pre></td></tr>
+  <tr><td><pre>{{>comment}}</pre></td></tr>
   </table>
+
+  <div>MailSubject: {{:mail_subject}}</div>
+  <div>Keywords: {{:match_name}}<div>
 </script>
 
 </body>

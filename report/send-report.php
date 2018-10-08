@@ -12,7 +12,7 @@ mb_language("Japanese");
 mb_internal_encoding("UTF-8");
 
 // HTML メールを送信する
-function sendReport($message, $image_path) {
+function sendReport($message, $mail_subject, $image_path) {
     $mail = new PHPMailer;
 
     // デバッグメッセージを有効にする場合は下記を有効にする
@@ -29,7 +29,7 @@ function sendReport($message, $image_path) {
 
     $mail->addAddress(MAIL_TO, "allsony");
     $mail->setFrom(MAIL_FROM, "allsony");
-    $mail->Subject = "[AllsonyReport]";
+    $mail->Subject = mb_encode_mimeheader($mail_subject, 'ISO-2022-JP');
     $mail->isHTML(true);
 
     // css は html に直接埋め込む必要がある
@@ -64,7 +64,7 @@ EOM;
 }
 
 // 送信した内容をブラウザ画面に表示する
-function displayMessage($message, $image_path) {
+function displayMessage($message, $mail_subject, $image_path) {
     echo <<< EOM
 <!DOCTYPE html>
 <html>
@@ -76,6 +76,7 @@ function displayMessage($message, $image_path) {
 </head>
 <body>
 <h2 color="red">結果を送信しました</h2>
+<a href="./">結果報告ページに戻る</a>
 <div>
 $message
 <img src="$image_path">
@@ -87,12 +88,14 @@ EOM;
 
 function main() {
     $message = $_POST["mailContents"];
+    $mail_subject = $_POST["mail_subject"];
     $image_path = "";
 
     // 画像が添付されていればファイルに保存する
-    if (!empty($_POST["match_name"])) {
+    $match_name = $_POST["match_name"];
+    if (!empty($match_name)) {
         if (is_uploaded_file($_FILES['match_img']['tmp_name'])) {
-            $uploadfile = MATCH_IMG_DIR . "/" . basename($_FILES['match_img']['name']);
+            $uploadfile = MATCH_IMG_DIR . "/" . $match_name . "." . pathinfo($_FILES['match_img']['name'], PATHINFO_EXTENSION);
             if (move_uploaded_file($_FILES['match_img']['tmp_name'], $uploadfile)) {
                 $image_path = $uploadfile;
             }
@@ -100,10 +103,9 @@ function main() {
     }
 
     // メール送信
-    sendReport($message, $image_path);
+    sendReport($message, $mail_subject, $image_path);
     // 送信した内容をブラウザ画面に表示
-    displayMessage($message, $image_path);
-
+    displayMessage($message, $mail_subject, $image_path);
 }
 
 // URL に version=1 が指定されていれば、phpinfo を表示する
