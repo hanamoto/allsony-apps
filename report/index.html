@@ -6,9 +6,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="lib/report.css">
 <script src="lib/jquery-3.3.1.slim.min.js"></script>
+
+<!-- https://www.jsviews.com/ -->
 <script src="lib/jsrender-0.9.91.min.js"></script>
+
+<!-- https://github.com/exif-js/exif-js -->
+<script src="lib/exif.js"></script>
+
+<!-- https://github.com/rossturner/HTML5-ImageUploader -->
+<script src="lib/ImageUploader.js"></script>
 <script>
 var sex_label;
+
+jQuery(document).ready(function($){
+	/* Initialization of input elements and ImageUploader.js */
+	$("input.image-upload").each(function(index){
+		var id_product = $(this).attr('data-product');
+		var uploader = new ImageUploader({'inputElement': $(this).get(0),
+			'onComplete': function() {
+				// Enable upload button
+				//$('#upload-button-'+id).removeProp('disabled');
+				// Hide progress bar
+        $("#upload-progress").addClass("hidden");
+			},
+			// Add rand parameter to prevent accidental caching of the image by the server
+			'uploadUrl': 'index.html?action=upload_image&id_image=' + '&rand=' + new Date().getTime(),
+			'debug': true
+			});
+	});
+
+	// The function below is triggered every time the user selects a file
+	$("input.image-upload").change(function(index){
+		// We will check additionally the extension of the image if it's correct and we support it
+		var extension = $(this).val();
+		if (extension.length > 0) {
+		  extension = extension.match(/[^.]+$/).pop().toLowerCase();
+			extension = ~$.inArray(extension, ['jpg', 'jpeg']);
+		} else {
+			event.preventDefault();
+			return;
+    }
+
+		if (!extension) {
+			event.preventDefault();
+			console.error('Unsupported image format');
+			return;
+		}
+		// Disable upload button until current upload completes
+		//$('#upload-button-'+id).prop('disabled',true);
+		// Show progress bar
+		$("#upload-progress").removeClass("hidden");
+		// If you want, you can show a preview of the selected image to the user, but to keep the code simple, we will skip this step
+	});
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   var teams = [
@@ -321,7 +371,13 @@ function generateMailContents() {
     <table class="table table-bordered table-sm" style="width: auto;">
     <tr class="table-info"><th>オーダー用紙の画像添付</th></tr>
     <tr><td>
+      <!--
       <input type="file" name="match_img" accept="image/*">
+      -->
+
+			<input class="image-upload" data-id="1" id="uploadImage3" type="file" name="images[1]" accept="image/jpeg,image/jpg" data-product="1034">
+			<div class="hidden" id="upload-progress">Uploading, please wait...</div>
+
     </td></tr>
     <tr class="table-info"><th>送信者のお名前</th></tr>
     <tr><td>
