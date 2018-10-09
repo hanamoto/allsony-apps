@@ -61,6 +61,11 @@ EOM;
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
     }
+
+    // 結果を JSON で返す
+    header('Content-Type: application/json');
+    $data = "success";
+    echo json_encode(compact('data'));
 }
 
 // 送信した内容をブラウザ画面に表示する
@@ -87,7 +92,7 @@ EOM;
 }
 
 function main() {
-    $message = $_POST["mailContents"];
+    $message = $_POST["mail_contents"];
     $mail_subject = $_POST["mail_subject"];
     $image_path = "";
 
@@ -105,7 +110,7 @@ function main() {
     // メール送信
     sendReport($message, $mail_subject, $image_path);
     // 送信した内容をブラウザ画面に表示
-    displayMessage($message, $mail_subject, $image_path);
+    //displayMessage($message, $mail_subject, $image_path);
 }
 
 // URL に version=1 が指定されていれば、phpinfo を表示する
