@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<title>Allsony Report</title>
+<title>Allsony試合結果報告ページ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="lib/report.css?t=20181010_2">
 <script src="lib/jquery-3.3.1.min.js"></script>
@@ -16,7 +16,7 @@
 <!-- https://github.com/rossturner/HTML5-ImageUploader -->
 <script src="lib/ImageUploader.js?t=20181010_2"></script>
 
-<script src="tournament-info.js?t=20181009"></script>
+<script src="tournament-info.js?t=20181010"></script>
 <script>
 var sex_name, sex_label;
 
@@ -84,20 +84,41 @@ function getMatchPattern() {
   return matchPatterns.man;
 }
 
+function generateMatchLeagueOption(matchLeagues) {
+  // 既存の子ノードを削除
+  $("#match_league").empty();
+
+  // tournament-info.js で定義された leagueInfo に従い、select/optoin を生成していく
+  matchLeagues.forEach(function(matchLeague) {
+    var optgroup = document.createElement("optgroup");
+    optgroup.label = matchLeague.label;
+    matchLeague.leagues.forEach(function(league) {
+      var option = document.createElement("option");
+      option.name = league.name;
+      option.text = league.text;
+      optgroup.appendChild(option);
+    });
+    $("#match_league").append(optgroup);
+  });
+}
+
 // 男子・女子・シニアを選択したときの処理
 function onSexUpdate() {
   sex_name = sex_label = "";
   if (document.getElementById("radio_man").checked) {
     sex_name = "man";
     sex_label = "男子";
+    generateMatchLeagueOption(leagueInfo.man);
   }
   if (document.getElementById("radio_woman").checked) {
     sex_name = "woman";
     sex_label = "女子";
+    generateMatchLeagueOption(leagueInfo.woman);
   }
   if (document.getElementById("radio_senior").checked) {
     sex_name = "senior";
     sex_label = "シニア";
+    generateMatchLeagueOption(leagueInfo.senior);
   }
 
   // 男子・女子・シニアの選択に応じて、入力すべきフィールドだけにする
@@ -112,7 +133,7 @@ function onSexUpdate() {
 
   // チーム選択フィールドの設定
 	$(".team-selector").each(function(index, element) {
-    var teams = teamData[sex_name];
+    var teams = teamInfo[sex_name];
 
     // 既存の子ノードを削除
     $(this).empty();
@@ -243,7 +264,7 @@ function onSendReport() {
 </head>
 <body>
 <header>
-  <h3>Allsony Report</h3>
+  <h3>Allsony試合結果報告ページ</h3>
 </header>
 <div>
   <table class="table table-bordered" onChange="onTableUpdate()">
@@ -258,30 +279,6 @@ function onSendReport() {
         <div>
         <select id="match_league">
           <option value="">-- 試合の選択 --</option>
-          <optgroup label="男子予選">
-            <option value="man_preliminary_A">予選Aリーグ</option>
-            <option value="man_preliminary_B">予選Bリーグ</option>
-            <option value="man_preliminary_C">予選Cリーグ</option>
-            <option value="man_preliminary_D">予選Dリーグ</option>
-            <option value="man_preliminary_E">予選Eリーグ</option>
-            <option value="man_preliminary_F">予選Fリーグ</option>
-            <option value="man_preliminary_G">予選Gリーグ</option>
-            <option value="man_preliminary_H">予選Hリーグ</option>
-          </optgroup>
-          <optgroup label="男子本戦">
-            <option value="man_final_1">決勝1位トーナメント</option>
-            <option value="man_final_2">決勝2位トーナメント</option>
-            <option value="man_final_3">決勝3位トーナメント</option>
-            <option value="man_final_4">決勝4位トーナメント</option>
-            <option value="man_final_5">決勝5位トーナメント</option>
-            <option value="man_final_6">決勝6位トーナメント</option>
-          </optgroup>
-          <optgroup label="女子">
-            <option value="woman_league">女子リーグ</option>
-          </optgroup>
-          <optgroup label="シニア">
-            <option value="senior_league">シニアリーグ</option>
-          </optgroup>
         </select>
         </div>
         <div>
