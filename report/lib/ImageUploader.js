@@ -198,6 +198,17 @@ ImageUploader.prototype.scaleImage = function(img, completionCallback, orientati
 	if (typeof this.config.onScale === 'function')
 		this.config.onScale(imageData);
     //this.performUpload(imageData, completionCallback);
+
+    // Show a preview of the selected image
+    var imagePreview = document.getElementById('image-preview');
+    imagePreview.height = canvas.height * imagePreview.width / canvas.width;
+    imagePreview.src = imageData;
+    $("#image-preview").show();
+    this.uploadComplete({
+        target: {
+            status: 'Completion' 
+        }
+    }, completionCallback);
 };
 
 ImageUploader.prototype.performUpload = function(imageData, completionCallback) {

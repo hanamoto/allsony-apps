@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="lib/report.css">
+<link rel="stylesheet" type="text/css" href="lib/report.css?v=1">
 <script src="lib/jquery-3.3.1.min.js"></script>
 
 <!-- https://www.jsviews.com/ -->
@@ -14,7 +14,7 @@
 <script src="lib/exif.js?t=20181009"></script>
 
 <!-- https://github.com/rossturner/HTML5-ImageUploader -->
-<script src="lib/ImageUploader.js?t=20181009"></script>
+<script src="lib/ImageUploader.js?t=201810102"></script>
 
 <script src="teamData.js?t=20181009"></script>
 <script>
@@ -26,13 +26,9 @@ function initializeImageUpload() {
 		var id_product = $(this).attr('data-product');
 		var uploader = new ImageUploader({'inputElement': $(this).get(0),
 			'onComplete': function() {
-				// Enable upload button
-				//$('#upload-button-'+id).removeProp('disabled');
 				// Hide progress bar
-        //$("#upload-progress").addClass("hidden");
+        $("#upload-progress").hide();
 			},
-			// Add rand parameter to prevent accidental caching of the image by the server
-			//'uploadUrl': 'index.html?action=upload_image&id_image=' + '&rand=' + new Date().getTime(),
 			'debug': true
 			});
 	});
@@ -54,11 +50,8 @@ function initializeImageUpload() {
 			console.error('Unsupported image format');
 			return;
 		}
-		// Disable upload button until current upload completes
-		//$('#upload-button-'+id).prop('disabled',true);
 		// Show progress bar
-		//$("#upload-progress").removeClass("hidden");
-    // If you want, you can show a preview of the selected image to the user, but to keep the code simple, we will skip this step
+    $("#upload-progress").show();
 	});
 }
 
@@ -424,8 +417,9 @@ function onSendReport() {
 
     <tr class="table-info"><th colspan=5>オーダー用紙の画像添付</th></tr>
     <tr><td colspan=5>
-      <input class="image-upload" data-id="1" id="uploadImage3" type="file" name="images[1]" accept="image/jpeg,image/jpg" data-product="1034">
+      <input class="image-upload" data-id="1" id="uploadImage3" type="file" name="images[1]" accept="image/jpeg,image/jpg" data-product="1034"><br>
       <div class="hidden" id="upload-progress">Uploading, please wait...</div>
+      <img class="hidden" width="320" height="0" id="image-preview">
 
     </td></tr>
     <tr class="table-info"><th colspan=5>送信者のお名前</th></tr>
