@@ -11,12 +11,12 @@
 <script src="lib/jsrender-0.9.91.min.js"></script>
 
 <!-- https://github.com/exif-js/exif-js -->
-<script src="lib/exif.js"></script>
+<script src="lib/exif.js?t=20181009"></script>
 
 <!-- https://github.com/rossturner/HTML5-ImageUploader -->
-<script src="lib/ImageUploader.js"></script>
+<script src="lib/ImageUploader.js?t=20181009"></script>
 
-<script src="teamData.js"></script>
+<script src="teamData.js?t=20181009"></script>
 <script>
 var sex_name, sex_label;
 
@@ -29,10 +29,10 @@ function initializeImageUpload() {
 				// Enable upload button
 				//$('#upload-button-'+id).removeProp('disabled');
 				// Hide progress bar
-        $("#upload-progress").addClass("hidden");
+        //$("#upload-progress").addClass("hidden");
 			},
 			// Add rand parameter to prevent accidental caching of the image by the server
-			'uploadUrl': 'index.html?action=upload_image&id_image=' + '&rand=' + new Date().getTime(),
+			//'uploadUrl': 'index.html?action=upload_image&id_image=' + '&rand=' + new Date().getTime(),
 			'debug': true
 			});
 	});
@@ -57,7 +57,7 @@ function initializeImageUpload() {
 		// Disable upload button until current upload completes
 		//$('#upload-button-'+id).prop('disabled',true);
 		// Show progress bar
-		$("#upload-progress").removeClass("hidden");
+		//$("#upload-progress").removeClass("hidden");
     // If you want, you can show a preview of the selected image to the user, but to keep the code simple, we will skip this step
 	});
 }
@@ -269,23 +269,25 @@ function onSendReport() {
         <div>
         <select id="match_league">
           <option value="">-- 試合の選択 --</option>
-          <optgroup label="予選">
-          <option value="preliminary_A">予選Aリーグ</option>
-          <option value="preliminary_B">予選Bリーグ</option>
-          <option value="preliminary_C">予選Cリーグ</option>
-          <option value="preliminary_D">予選Dリーグ</option>
-          <option value="preliminary_E">予選Eリーグ</option>
-          <option value="preliminary_F">予選Fリーグ</option>
-          <option value="preliminary_G">予選Gリーグ</option>
-          <option value="preliminary_H">予選Hリーグ</option>
+          <option value="woman_league">女子リーグ</option>
+          <option value="senior_league">シニアリーグ</option>
+          <optgroup label="男子予選">
+            <option value="man_preliminary_A">予選Aリーグ</option>
+            <option value="man_preliminary_B">予選Bリーグ</option>
+            <option value="man_preliminary_C">予選Cリーグ</option>
+            <option value="man_preliminary_D">予選Dリーグ</option>
+            <option value="man_preliminary_E">予選Eリーグ</option>
+            <option value="man_preliminary_F">予選Fリーグ</option>
+            <option value="man_preliminary_G">予選Gリーグ</option>
+            <option value="man_preliminary_H">予選Hリーグ</option>
           </optgroup>
-          <optgroup label="決勝">
-          <option value="final_1">決勝1位トーナメント</option>
-          <option value="final_2">決勝2位トーナメント</option>
-          <option value="final_3">決勝3位トーナメント</option>
-          <option value="final_4">決勝4位トーナメント</option>
-          <option value="final_5">決勝5位トーナメント</option>
-          <option value="final_6">決勝6位トーナメント</option>
+          <optgroup label="男子本戦">
+            <option value="man_final_1">決勝1位トーナメント</option>
+            <option value="man_final_2">決勝2位トーナメント</option>
+            <option value="man_final_3">決勝3位トーナメント</option>
+            <option value="man_final_4">決勝4位トーナメント</option>
+            <option value="man_final_5">決勝5位トーナメント</option>
+            <option value="man_final_6">決勝6位トーナメント</option>
         </optgroup>
         </select>
         </div>
