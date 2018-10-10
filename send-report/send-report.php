@@ -39,7 +39,7 @@ function sendReport($message, $mail_subject, $image_path) {
     $image_tag = '';
     if (!empty($image_path)) {
         $mail->addEmbeddedImage($image_path, "image.jpg");
-        $image_tag = '<img width="640" src="cid:image.jpg">';
+        $image_tag = '<img width="480" src="cid:image.jpg">';
     }
 
     $htmlMessage = <<< EOM
@@ -54,7 +54,7 @@ $css
 </head>
 <body>
 <table>
-<tr>
+<tr valign="top">
 <td>$message</td>
 <td>$image_tag</td>
 </tr>

@@ -94,7 +94,7 @@ function generateMatchLeagueOption(matchLeagues) {
     optgroup.label = matchLeague.label;
     matchLeague.leagues.forEach(function(league) {
       var option = document.createElement("option");
-      option.name = league.name;
+      option.value = league.name;
       option.text = league.text;
       optgroup.appendChild(option);
     });
@@ -188,6 +188,7 @@ function onTableUpdate() {
 function generateMailContents() {
   // 上記のヒアドキュメント内のキーワードを置換する
   var data = {
+    userAgent: navigator.userAgent,
     sex_label: sex_label,
     match_league: $("#match_league option:selected").text(),
     match_number: $("#match_number option:selected").text(),
@@ -506,9 +507,11 @@ function onSendReport() {
     <tr class="table-info"><th colspan=5>スタッフへの連絡事項 (もしあれば)</th></tr>
     <tr><td colspan=5><pre>{{>comment}}</pre></td></tr>
   </table>
-
+<!--
+  <div>UserAgent: {{:userAgent}}</div>
   <div>MailSubject: {{:mail_subject}}</div>
   <div>Keywords: {{:match_name}}<div>
+-->
 </script>
 
 </body>
