@@ -28,6 +28,8 @@ function initializeImageUpload() {
 			'onComplete': function() {
 				// Hide progress bar
         $("#upload-progress").hide();
+
+        // 
 			},
 			'debug': true
 			});
@@ -226,6 +228,7 @@ function onSendReport() {
         mail_subject: $('#mail_subject').val(),
         mail_contents: $('#mail_contents').val(),
         match_name: $("#match_name").val(),
+        match_image: $("#match_image").val(),
     },
   })
   // ・ステータスコードは正常で、dataTypeで定義したようにパース出来たとき
@@ -437,8 +440,9 @@ function onSendReport() {
   </table>
 
   <input type="hidden" name="mail_contents" id="mail_contents" value="">
-  <input type="hidden" name="match_name" id="match_name" value="">
   <input type="hidden" name="mail_subject" id="mail_subject" value="">
+  <input type="hidden" name="match_name" id="match_name" value="">
+  <input type="hidden" name="match_image" id="match_image" value="">
 
 </div>
 
@@ -470,31 +474,31 @@ function onSendReport() {
     <tr>
       <td colspan=2 class="text-right">{{:game_L_S1}}</td>
       <td class="text-center">S1</td>
-      <td colspan=2 class="text-left">{{:game_R_S1}}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_S1}}</td>
     </tr>
     {{/if}}
     {{if sex_label == "男子"}}
     <tr>
       <td colspan=2 class="text-right">{{:game_L_S2}}</td>
       <td class="text-center">S2</td>
-      <td colspan=2 class="text-left">{{:game_R_S2}}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_S2}}</td>
     </tr>
     {{/if}}
     <tr>
       <td colspan=2 class="text-right">{{:game_L_D1}}</td>
       <td class="text-center">D1</td>
-      <td colspan=2 class="text-left">{{:game_R_D1}}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D1}}</td>
     </tr>
     <tr>
       <td colspan=2 class="text-right">{{:game_L_D2}}</td>
       <td class="text-center">D2</td>
-      <td colspan=2 class="text-left">{{:game_R_D2}}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D2}}</td>
     </tr>
     {{if sex_label == "男子" || sex_label == "シニア"}}
     <tr>
       <td colspan=2 class="text-right">{{:game_L_D3}}</td>
       <td class="text-center">D3</td>
-      <td colspan=2 class="text-left">{{:game_R_D3}}</td></td>
+      <td colspan=2 class="text-left">{{:game_R_D3}}</td>
     </tr>
     {{/if}}
     <tr>

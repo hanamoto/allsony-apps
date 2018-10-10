@@ -36,8 +36,10 @@ function sendReport($message, $mail_subject, $image_path) {
     $css = file_get_contents('lib/report.css');
 
     // 画像が送信されていれば、メールにも添付する
+    $image_tag = '';
     if (!empty($image_path)) {
-        $mail->addAttachment($image_path);
+        $mail->addEmbeddedImage($image_path, "image.jpg");
+        $image_tag = '<img width="640" src="cid:image.jpg">';
     }
 
     $htmlMessage = <<< EOM
@@ -51,7 +53,12 @@ $css
 </style>
 </head>
 <body>
-$message
+<table>
+<tr>
+<td>$message</td>
+<td>$image_tag</td>
+</tr>
+</table>
 </body>
 </html>
 EOM;
@@ -96,15 +103,17 @@ function main() {
     $mail_subject = $_POST["mail_subject"];
     $image_path = "";
 
-    // 画像が添付されていればファイルに保存する
+    // 送信された画像イメージをファイルに保存する
     $match_name = $_POST["match_name"];
-    if (!empty($match_name)) {
-        if (is_uploaded_file($_FILES['match_img']['tmp_name'])) {
-            $uploadfile = MATCH_IMG_DIR . "/" . $match_name . "." . pathinfo($_FILES['match_img']['name'], PATHINFO_EXTENSION);
-            if (move_uploaded_file($_FILES['match_img']['tmp_name'], $uploadfile)) {
-                $image_path = $uploadfile;
-            }
-        }
+    $match_image = $_POST["match_image"];
+    if (!empty($match_image)) {
+        // base64デコードする
+        $match_image = base64_decode($match_image);
+        // まだ文字列の状態なので、画像リソース化
+        $image = imagecreatefromstring($match_image);
+
+        $image_path = MATCH_IMG_DIR . "/" . $match_name . ".jpg";
+        imagejpeg($image, $image_path);
     }
 
     // メール送信

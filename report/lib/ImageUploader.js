@@ -204,6 +204,8 @@ ImageUploader.prototype.scaleImage = function(img, completionCallback, orientati
     imagePreview.height = canvas.height * imagePreview.width / canvas.width;
     imagePreview.src = imageData;
     $("#image-preview").show();
+    // Save imageData into hidden element
+    $("#match_image").val(imageData.split(',')[1]);
     this.uploadComplete({
         target: {
             status: 'Completion' 
