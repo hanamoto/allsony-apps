@@ -3,7 +3,7 @@
 // https://github.com/PHPMailer/PHPMailer/tree/5.2-stable
 require './lib/PHPMailer-5.2/PHPMailerAutoload.php';
 
-include 'settings.php';
+include 'account.php';
 
 // 試合結果のイメージを保存するディレクトリ
 define("MATCH_IMG_DIR", "match_img");
