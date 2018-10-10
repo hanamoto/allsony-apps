@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <title>Allsony Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="lib/report.css?v=1">
+<link rel="stylesheet" type="text/css" href="lib/report.css?t=20181010_2">
 <script src="lib/jquery-3.3.1.min.js"></script>
 
 <!-- https://www.jsviews.com/ -->
@@ -14,7 +14,7 @@
 <script src="lib/exif.js?t=20181009"></script>
 
 <!-- https://github.com/rossturner/HTML5-ImageUploader -->
-<script src="lib/ImageUploader.js?t=201810102"></script>
+<script src="lib/ImageUploader.js?t=20181010_2"></script>
 
 <script src="teamData.js?t=20181009"></script>
 <script>
@@ -60,13 +60,6 @@ function initializeImageUpload() {
 jQuery(document).ready(function($){
   // ImageUpload ボタンの初期化
   initializeImageUpload();
-
-  // 入力フィールドは最初は非表示
-	$(".input-field").each(function(index){
-    $(this).hide();
-  });
-  
-  $("#send_report_status").hide();
 });
 
 // 男子・女子・シニアそれぞれの試合パターンを返す
@@ -265,8 +258,6 @@ function onSendReport() {
         <div>
         <select id="match_league">
           <option value="">-- 試合の選択 --</option>
-          <option value="woman_league">女子リーグ</option>
-          <option value="senior_league">シニアリーグ</option>
           <optgroup label="男子予選">
             <option value="man_preliminary_A">予選Aリーグ</option>
             <option value="man_preliminary_B">予選Bリーグ</option>
@@ -284,7 +275,13 @@ function onSendReport() {
             <option value="man_final_4">決勝4位トーナメント</option>
             <option value="man_final_5">決勝5位トーナメント</option>
             <option value="man_final_6">決勝6位トーナメント</option>
-        </optgroup>
+          </optgroup>
+          <optgroup label="女子">
+            <option value="woman_league">女子リーグ</option>
+          </optgroup>
+          <optgroup label="シニア">
+            <option value="senior_league">シニアリーグ</option>
+          </optgroup>
         </select>
         </div>
         <div>
@@ -310,7 +307,7 @@ function onSendReport() {
       </th>
     </tr>
   </table>
-  <table class="table table-bordered input-field" onChange="onTableUpdate()">
+  <table class="table table-bordered input-field hidden" onChange="onTableUpdate()">
     <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th colspan=3>勝敗数</th><th>対戦チーム名</th></tr>
     <tr class="text-center">
       <td>
@@ -435,7 +432,7 @@ function onSendReport() {
     </td></tr>
     <tr><td colspan=5 class="text-center">
       <button onClick="onSendReport()" id="send_button">結果を送信する</button>
-      <div id="send_report_status">送信結果</div>
+      <div class="hidden" id="send_report_status">(送信結果を表示するフィールド)</div>
     </td></tr>
   </table>
 
