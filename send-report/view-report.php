@@ -29,10 +29,13 @@ foreach(glob(REPORT_DIR . '/*.html') as $file) {
             $title = $file;
         }
 
-        echo "<a href=\"$file\">$title</a><br>";
+        echo "・<a href=\"$file\">$title</a><br>";
     }
 }
 ?>
+<br>
+<hr>
+<a href=".">試合結果報告ページに戻る</a><br>
 
 </body>
 </html>

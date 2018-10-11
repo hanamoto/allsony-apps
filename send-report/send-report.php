@@ -88,6 +88,7 @@ function saveHtmlReport($message, $mail_subject, $image_path, $html_path) {
 <link rel="stylesheet" type="text/css" href="../style.css">
 </head>
 <body>
+<a href="../view-report.php">試合結果確認ページに戻る</a><br>
 <table>
 <tr valign="top">
 <td>$message</td>
