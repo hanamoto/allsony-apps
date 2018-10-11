@@ -5,8 +5,8 @@ require './lib/PHPMailer-5.2/PHPMailerAutoload.php';
 
 include 'account.php';
 
-// 試合結果のイメージを保存するディレクトリ
-define("MATCH_IMG_DIR", "match_img");
+// 試合結果を保存するディレクトリ
+define("REPORT_DIR", "report");
 
 mb_language("Japanese");
 mb_internal_encoding("UTF-8");
@@ -38,7 +38,7 @@ function sendReport($message, $mail_subject, $image_path) {
     // 画像が送信されていれば、メールにも添付する
     $image_tag = '';
     if (!empty($image_path)) {
-        $mail->addEmbeddedImage($image_path, "image.jpg");
+        $mail->addEmbeddedImage(REPORT_DIR . "/" . $image_path, "image.jpg");
         $image_tag = '<img width="480" src="cid:image.jpg">';
     }
 
@@ -68,11 +68,37 @@ EOM;
         echo 'Message could not be sent.';
         echo 'Mailer Error: ' . $mail->ErrorInfo;
     }
+}
 
-    // 結果を JSON で返す
-    header('Content-Type: application/json');
-    $data = "success";
-    echo json_encode(compact('data'));
+// 結果を HTML として保存
+function saveHtmlReport($message, $mail_subject, $image_path, $html_path) {
+    // 画像が送信されていれば HTML にも表示させる
+    $image_tag = '';
+    if (!empty($image_path)) {
+        $image_tag = "<img width=\"480\" src=\"$image_path\">";
+    }
+
+    $html = <<< EOM
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>$mail_subject</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<table>
+<tr valign="top">
+<td>$message</td>
+<td>$image_tag</td>
+</tr>
+</table>
+</body>
+</html>
+EOM;
+
+   file_put_contents($html_path, $html);
 }
 
 function main() {
@@ -89,12 +115,21 @@ function main() {
         // まだ文字列の状態なので、画像リソース化
         $image = imagecreatefromstring($match_image);
 
-        $image_path = MATCH_IMG_DIR . "/" . $match_name . ".jpg";
-        imagejpeg($image, $image_path);
+        $image_path = $match_name . ".jpg";
+        imagejpeg($image, REPORT_DIR . "/" . $image_path);
     }
 
     // メール送信
     sendReport($message, $mail_subject, $image_path);
+
+    // 結果を HTML として保存
+    $html_path = REPORT_DIR . "/" . $match_name . ".html";
+    saveHtmlReport($message, $mail_subject, $image_path, $html_path);
+
+    // 結果を JSON で返す
+    header('Content-Type: application/json');
+    $data = "success";
+    echo json_encode(compact('data'));
 }
 
 // URL に version=1 が指定されていれば、phpinfo を表示する
