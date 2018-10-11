@@ -33,7 +33,7 @@ function sendReport($message, $mail_subject, $image_path) {
     $mail->isHTML(true);
 
     // css は html に直接埋め込む必要がある
-    $css = file_get_contents('lib/report.css');
+    $css = file_get_contents('style.css');
 
     // 画像が送信されていれば、メールにも添付する
     $image_tag = '';
@@ -75,29 +75,6 @@ EOM;
     echo json_encode(compact('data'));
 }
 
-// 送信した内容をブラウザ画面に表示する
-function displayMessage($message, $mail_subject, $image_path) {
-    echo <<< EOM
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8"/>
-<title>Allsony Report</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="lib/report.css">
-</head>
-<body>
-<h2 color="red">結果を送信しました</h2>
-<a href="./">結果報告ページに戻る</a>
-<div>
-$message
-<img src="$image_path">
-</div>
-</body>
-</html>
-EOM;
-}
-
 function main() {
     $message = $_POST["mail_contents"];
     $mail_subject = $_POST["mail_subject"];
@@ -118,8 +95,6 @@ function main() {
 
     // メール送信
     sendReport($message, $mail_subject, $image_path);
-    // 送信した内容をブラウザ画面に表示
-    //displayMessage($message, $mail_subject, $image_path);
 }
 
 // URL に version=1 が指定されていれば、phpinfo を表示する
