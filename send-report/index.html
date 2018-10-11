@@ -5,6 +5,7 @@
 <title>Allsony試合結果報告ページ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="lib/report.css?t=20181010_2">
+<link rel="stylesheet" type="text/css" href="lib/loading.css?t=20181010_2">
 <script src="lib/jquery-3.3.1.min.js"></script>
 
 <!-- https://www.jsviews.com/ -->
@@ -232,7 +233,10 @@ function onSendReport() {
   // いったんテーブルを更新
   onTableUpdate();
 
-  $("#send_button").text("送信中...");
+  // 送信中の表示を出す
+  $("#send_button").hide();
+  $("#sending_status").show();
+  $("#send_report_status").hide();
 
   // データを送信
   $.ajax({
@@ -248,15 +252,16 @@ function onSendReport() {
   })
   // ・ステータスコードは正常で、dataTypeで定義したようにパース出来たとき
   .done(function (response) {
-      $("#send_button").text("結果を送信する");
-      $("#send_report_status").text("送信が完了しました");
+      $("#send_button").show();
+      $("#sending_status").hide();
       $("#send_report_status").show();
   })
   // ・サーバからステータスコード400以上が返ってきたとき
   // ・ステータスコードは正常だが、dataTypeで定義したようにパース出来なかったとき
   // ・通信に失敗したとき
   .fail(function () {
-      $("#send_button").text("結果を送信する");
+      $("#send_button").show();
+      $("#sending_status").hide();
       $("#send_report_status").text("送信に失敗しました");
       $("#send_report_status").show();
   });
@@ -274,7 +279,7 @@ function onSendReport() {
 試合終了後、勝チームのキャプテンは結果を下記のフォームに入力してください。
 </div>
 <div>
-  <table class="table table-bordered" width="311" onChange="onTableUpdate()">
+  <table class="table table-bordered" width="320" onChange="onTableUpdate()">
     <tr class="text-center text-nowrap table-info"><th colspan=5>試合情報</th></tr>
     <tr class="text-center">
       <th class="text-left">
@@ -311,7 +316,7 @@ function onSendReport() {
       </th>
     </tr>
   </table>
-  <table class="table table-bordered input-field hidden" width="311" onChange="onTableUpdate()">
+  <table class="table table-bordered input-field hidden" width="320" onChange="onTableUpdate()">
     <tr class="text-center text-nowrap table-info"><th>自チーム名</th><th>vs</th><th>対戦チーム名</th></tr>
     <tr class="text-center">
       <td>
@@ -428,7 +433,10 @@ function onSendReport() {
     <tr class="table-info"><th colspan=3>オーダー用紙の画像添付</th></tr>
     <tr><td colspan=3>
       <input class="image-upload" data-id="1" id="uploadImage3" type="file" name="images[1]" accept="image/jpeg,image/jpg" data-product="1034"><br>
-      <div class="hidden" id="upload-progress">Uploading, please wait...</div>
+      <div class="hidden" id="upload-progress">
+          <span class="ld ld-ring ld-cycle" style="font-size:24px;color:#8da"></span>
+          Uploading, please wait...
+      </div>
       <img class="hidden" width="320" height="0" id="image-preview">
 
     </td></tr>
@@ -442,7 +450,14 @@ function onSendReport() {
     </td></tr>
     <tr><td colspan=3 class="text-center">
       <button onClick="onSendReport()" id="send_button">結果を送信する</button>
-      <div class="hidden" id="send_report_status">(送信結果を表示するフィールド)</div>
+      <div class="hidden" id="sending_status">
+        <span class="ld ld-ring ld-cycle" style="font-size:24px;color:#8da"></span>
+        送信中...
+      </div>
+      <div class="hidden" id="send_report_status" style="color: red;">
+        送信完了しました。<br>
+        ご協力ありがとうございます。
+      </div>
     </td></tr>
   </table>
 
